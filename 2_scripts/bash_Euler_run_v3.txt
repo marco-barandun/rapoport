@@ -1,0 +1,137 @@
+#module load new gmp
+module load gcc/8.2.0 r/4.1.3 udunits2/2.2.28 gdal/3.1.4 geos/3.8.1 proj/6.3.2 zlib/1.2.9
+cd /nfs/nas22.ethz.ch/fs2201/usys_ibz_cr_lab/Marco//euler_niche_modelling
+
+# TREES
+bsub -n 128 -W 120:00 -R "rusage[mem=8000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_128.R"
+# Memory usage seems to be constantly at 25%, thus reduction of memory by >50%
+bsub -n 128 -W 120:00 -R "rusage[mem=3000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_128.R"
+
+
+# This should allow to run it again just after it finished
+bsub -J job1 -n 128 -W 120:00 -R "rusage[mem=8000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_128.R"
+bsub -J job2 -w "executed(job1)" -n 128 -W 120:00 -R "rusage[mem=8000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_128.R"
+bsub -J job3 -w "executed(job2)" -n 128 -W 120:00 -R "rusage[mem=8000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_128.R"
+
+
+
+
+
+# HERBS
+bsub -n 128 -W 120:00 -R "rusage[mem=10000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.10_herbs_128.R"
+bsub -n 4 -W 120:00 -R "rusage[mem=10000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.10_herbs_4.R"
+bsub -n 20 -W 120:00 -R "rusage[mem=40000] span[hosts=1]" "R --vanilla --no-echo < Marco_cleanOccs_v5.10_herbs_20.R"
+bsub -n 30 -W 120:00 -R "rusage[mem=35000] span[hosts=1]" "R --vanilla --no-echo < Marco_cleanOccs_v5.10_herbs_30.R"
+
+# new script 27.09.2022
+bsub -n 128 -W 120:00 -R "rusage[mem=8000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_herbs_128.R"
+
+
+
+bsub -J job1 command1
+bsub -J job2 -w "done(job1)" command2
+bsub -J job3 -w "done(job2)" command3
+
+03102022
+bsub -n 4 -W 120:00 -R "rusage[mem=20000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_herbs_4.R"
+06102022 # With 10GB the process was interrupted by reaching the memory usage limit
+bsub -n 4 -W 120:00 -R "rusage[mem=20000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_herbs_4.R"
+06102022 # With 20GB the process was interrupted by reaching the memory usage limit - increasing the number of cores, 
+# they should share memory - 11102022 seems to work now
+bsub -n 64 -W 120:00 -R "rusage[mem=10000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_herbs_64.R"
+# Memory usage seems to be constantly at 25%, thus reduction of memory by >50% + increased the number of cores
+# Nope, I just selected 4 cores..........
+bsub -n 128 -W 120:00 -R "rusage[mem=10000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_herbs_128.R"
+
+
+
+09102022
+bsub -n 32 -W 120:00 -R "rusage[mem=10000] span[hosts=1]" "R --vanilla --no-echo < Marco_cleanOccs_v5.10_herbs_32.R"
+11102022 # Execution halted due to memory usage limits
+bsub -n 4 -W 120:00 -R "rusage[mem=20000] span[hosts=1]" "R --vanilla --no-echo < Marco_cleanOccs_v5.10_herbs_20221011_4.R"
+12102022 # Increased the number of cores to increase the pool of memory
+bsub -n 32 -W 120:00 -R "rusage[mem=20000] span[hosts=1]" "R --vanilla --no-echo < Marco_cleanOccs_v5.10_herbs_20221011_32.R"
+25102022 # Increased the number of cores and memory to increase the pool of memory
+bsub -n 64 -W 120:00 -R "rusage[mem=25000] span[hosts=1]" "R --vanilla --no-echo < Marco_cleanOccs_v5.10_herbs_20221025_64.R"
+
+
+
+
+
+
+herbs clean occs euler: ?
+herbs clean occs iMac: OK rev
+herbs maxent: OK
+trees maxent: worked until now, let's see
+
+
+
+
+
+NEW : SUBMISSION OF THREE HERB SCRIPTS AT THE SAME TIME!!!
+
+module load gcc/8.2.0 r/4.1.3 udunits2/2.2.28 gdal/3.1.4 geos/3.8.1 proj/6.3.2 zlib/1.2.9
+cd /nfs/nas22.ethz.ch/fs2201/usys_ibz_cr_lab/Marco//euler_niche_modelling
+
+bsub -n 128 -W 120:00 -R "rusage[mem=10000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_herbs_128_p1.R"
+bsub -n 128 -W 120:00 -R "rusage[mem=10000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_herbs_128_p2.R"
+bsub -n 128 -W 120:00 -R "rusage[mem=10000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_herbs_128_p3.R"
+
+
+bsub -n 128 -W 120:00 -R "rusage[mem=4000] span[hosts=1]" "R --vanilla --no-echo < Marco_maxent_v5.6_herbs_128_p1.R"
+
+
+
+
+# Scratch herbs + trees run
+
+module load gcc/8.2.0 r/4.1.3 udunits2/2.2.28 gdal/3.1.4 geos/3.8.1 proj/6.3.2 zlib/1.2.9
+cd /cluster/home/mbarandun/scratch/run_herbs/
+
+bsub -n 128 -W 120:00 -R "rusage[mem=15000] span[hosts=1]" "R --vanilla --no-echo < run_herbs_r1.R"
+bsub -n 128 -W 120:00 -R "rusage[mem=15000] span[hosts=1]" "R --vanilla --no-echo < run_herbs_r2.R"
+bsub -n 128 -W 120:00 -R "rusage[mem=15000] span[hosts=1]" "R --vanilla --no-echo < run_herbs_r3.R"
+bsub -n 128 -W 120:00 -R "rusage[mem=20000] span[hosts=1]" "R --vanilla --no-echo < run_herbs_ALL.R"
+
+
+module load gcc/8.2.0 r/4.1.3 udunits2/2.2.28 gdal/3.1.4 geos/3.8.1 proj/6.3.2 zlib/1.2.9
+cd /cluster/home/mbarandun/scratch/rerun_trees_euler/
+bsub -n 128 -W 120:00 -R "rusage[mem=6000] span[hosts=1]" "R --vanilla --no-echo < rerun_trees_euler_v3.1.R"
+
+
+
+
+# Running the MESS computation
+
+module load gcc/8.2.0 r/4.1.3 udunits2/2.2.28 gdal/3.1.4 geos/3.8.1 proj/6.3.2 zlib/1.2.9
+cd /cluster/work/crowther/Marco/rerun_trees_euler/
+bsub -n 128 -W 48:00 -R "rusage[mem=6000] span[hosts=1]" "R --vanilla --no-echo < mess.R"
+
+module load gcc/8.2.0 r/4.1.3 udunits2/2.2.28 gdal/3.1.4 geos/3.8.1 proj/6.3.2 zlib/1.2.9
+cd /cluster/home/mbarandun/scratch/run_herbs/
+bsub -n 128 -W 120:00 -R "rusage[mem=6000] span[hosts=1]" "R --vanilla --no-echo < mess.R"
+
+
+
+sbatch --job-name=mess_herbs -n 64 --ntasks-per-node=64 --mem-per-cpu=6GB --time=120:00:00 --wrap="R --vanilla --no-echo < mess_v2_64.R"
+
+sbatch --job-name=mess_herbs -n 5 --ntasks-per-node=5 --mem-per-cpu=6GB --time=120:00:00 --wrap="R --vanilla --no-echo < 3_MESS_perHemispheres_EULER.R"
+
+
+
+
+module load gcc/8.2.0 r/4.1.3 udunits2/2.2.28 gdal/3.1.4 geos/3.8.1 proj/6.3.2 zlib/1.2.9
+cd /cluster/work/crowther/Marco/rerun_trees_euler/
+bsub -n 64 -W 48:00 -R "rusage[mem=4000] span[hosts=1]" "R --vanilla --no-echo < mess_64.R"
+
+module load gcc/8.2.0 r/4.1.3 udunits2/2.2.28 gdal/3.1.4 geos/3.8.1 proj/6.3.2 zlib/1.2.9
+cd /cluster/home/mbarandun/scratch/run_herbs/
+bsub -n 64 -W 120:00 -R "rusage[mem=4000] span[hosts=1]" "R --vanilla --no-echo < mess_64.R"
+
+
+
+
+Cd /cluster/home/mbarandun/scratch
+module load gcc/8.2.0 r/4.1.3 udunits2/2.2.28 gdal/3.1.4 geos/3.8.1 proj/6.3.2 zlib/1.2.9
+sbatch --job-name=mess_herbs -n 64 --ntasks-per-node=64 --mem-per-cpu=6GB --time=120:00:00 --wrap="R --vanilla --no-echo < 3_MESS_perHemispheres_EULER.R"
+
