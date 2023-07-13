@@ -1,6 +1,6 @@
 library(tidyverse)
 
-setwd("/Users/marco/GitHub/environmental_breadth_final/")
+setwd(".")
 
 # ------ Read in the data from the models --------------------------------------------------------------------------
 

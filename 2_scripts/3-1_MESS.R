@@ -2,7 +2,6 @@ library(raster)
 library(tidyverse)
 library(dismo)
 
-#setwd("~/GitHub/clean_rapoport_v2")
 base::setwd("."); getwd()
 
 run_mess <- function(species_list, envs_var) {

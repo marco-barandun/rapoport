@@ -8,7 +8,7 @@ library("gridExtra")
 library("data.table")
 library("viridis")
 
-setwd("/Users/marco/GitHub/environmental_breadth_final/"); getwd()
+setwd("."); getwd()
 
 source("./2_scripts/5-3_coefficients_MESS_perHemisphere.R")
 

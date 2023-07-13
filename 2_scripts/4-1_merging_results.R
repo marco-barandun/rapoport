@@ -1,5 +1,3 @@
-### Analysis of the tree species for publication
-
 library("tidyverse")
 library("data.table")
 library("dplyr")
@@ -9,16 +7,10 @@ library("plotly")
 library("gridExtra")
 library("data.table")
 
-# --------------------- Notes
-# To find a good transformation plot the hist of the envs and look hist((var)^1/2) --> sqrt seems the best
-# ---------------------
 
 base::setwd("."); getwd()
-dir_archive <- "/Users/marco/Documents/env_breadth_archive/"
+dir_archive <- "/env_breadth_archive/"
 
-##### Reading in the first line of all the species *_maxent_results.csv file (the line with the niche breadth estimate)
-##### using the data.table package with fread as performance is much much faster than other solutions
-##### https://statisticsglobe.com/merge-csv-files-in-r
 raw_niche_data_trees <- list.files(path = paste(dir_archive, "res_maxent_result_tables_trees/", sep = ""), 
                                    pattern = "*_maxent_results.csv", full.names = TRUE) %>%
   map_df(~fread(., nrows = 1)) %>%

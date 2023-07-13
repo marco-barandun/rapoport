@@ -8,7 +8,7 @@ library("gridExtra")
 library("data.table")
 library("viridis")
 
-setwd("/Users/marco/GitHub/environmental_breadth_final/"); getwd()
+setwd("."); getwd()
 
 # Reading in the Hemisphere Specific coefficients
 source("./2_scripts/5-2_coefficients_HS.R")
